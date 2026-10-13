@@ -1,6 +1,7 @@
-FROM python:3.10
+FROM python:3.12-slim
+COPY --from=ghcr.io/astral-sh/uv:0.11.0 /uv /usr/local/bin/uv
 WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev
 COPY . .
-CMD ["python", "app.py"]
+CMD ["uv", "run", "--no-sync", "python", "app.py"]

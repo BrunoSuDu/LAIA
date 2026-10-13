@@ -12,13 +12,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install pytest
+        run: uv sync --frozen
       - name: Train model
-        run: python train.py
+        run: uv run python train.py
       - name: Upload model artifact
         uses: actions/upload-artifact@v4
         with:
@@ -35,18 +35,18 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install pytest
+        run: uv sync --frozen
       - name: Download model artifact
         uses: actions/download-artifact@v4
         with:
           name: model
           path: model_data # 👈 downloads model.pkl into model_data/
       - name: Run Flask tests
-        run: pytest -v
+        run: uv run pytest -v
   build:
     runs-on: ubuntu-latest
     needs: test

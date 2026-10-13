@@ -1,5 +1,6 @@
 from sklearn.datasets import load_iris
 from sklearn.linear_model import LogisticRegression
+import os
 import joblib
 # Load dataset
 X, y = load_iris(return_X_y=True)
@@ -7,5 +8,6 @@ X, y = load_iris(return_X_y=True)
 model = LogisticRegression(max_iter=200)
 model.fit(X, y)
 # Save model
+os.makedirs("model_data", exist_ok=True)
 joblib.dump(model, "model_data/model.pkl")
 print("✅ Model trained and saved as model.pkl")
