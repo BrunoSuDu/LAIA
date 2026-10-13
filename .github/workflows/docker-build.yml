@@ -68,9 +68,12 @@ jobs:
         with:
           name: model
           path: model_data # 👈 downloads model.pkl into model_data/
+      - name: Lowercase repo name for GHCR
+        id: img
+        run: echo "repo=${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ghcr.io/solays/laia_pl_repo/ml-flask-app:latest
+          tags: ghcr.io/${{ steps.img.outputs.repo }}/ml-flask-app:latest
